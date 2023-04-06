@@ -40,6 +40,7 @@ function register(userprofile) {
     res.status(analysis.code).send(analysis.message);
 
   });
+  
 
 
 
@@ -84,9 +85,36 @@ function tweterooPosts(parsing) {
   });
 
 
-  
 
-app.listen(PORT, () => console.log(`Hi! Its Me!`));
+  function allTweterooPosts(display) {
+
+    let displayed = 1;
+
+    if (display) {
+
+        displayed = parseInt(display);
+      if (isNaN(displayed) || displayed < 1) {
+
+        return { code: 400, data: "Informe uma página válida!" };
+
+      }
+
+    }
+
+    return { code: 200, data: posts.slice((displayed - 1) * 10, 10 * displayed) };
+
+  }
+
+  app.get("/tweets", (req, res) => {
+
+    const myTab = req.query.page;
+    const dataanalysis = allTweterooPosts(myTab);
+    res.status(dataanalysis.code).send(dataanalysis.data);
+
+  });
+
+
+app.listen(PORT, () => console.log(`Hi, Its Me!`));
   
 
 
